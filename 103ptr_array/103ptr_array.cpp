@@ -65,6 +65,7 @@ int main()
 	{
 		//连续空间
 		int size = 2;
+		//new 元素类型[数量]  返回  元素类型*  元素类型 = int[3] int (*)[3]
 		int(*arr5)[3] = new int[size][3]{ {1,1,2},{3,2,3} };//new 元素类型[数量], new[] 返回的是 指向第一个元素的指针。 第一个元素的类型是:int[3]  所以返回类型是： int (*)[3]
 		for (int i = 0; i < size; i++)
 		{
@@ -86,6 +87,7 @@ int main()
 		4 5 6 3
 		1 1 1 1
 		*/
+		//new 元素类型[数量] 返回的是 元素类型*  (int*)*
 		int** arr6 = new int* [height] {0};
 		for (int i = 0; i < height; i++)
 		{
