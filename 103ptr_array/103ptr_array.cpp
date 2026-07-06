@@ -2,12 +2,177 @@
 //
 
 #include <iostream>
-
+#include <algorithm>
+#include <vector>
+using namespace std;
+class XData
+{
+public:
+	int x = 0;
+	int y = 0;
+};
+#define ARRSIZE 3
 int main()
 {
-    std::cout << "Hello World!\n";
-}
+	std::cout << "cppds.com" << endl;
+	//栈二维数组初始化
+	{
+		// 2x3
+		// 1 2 3
+		// 4 5 6
+		unsigned char arr1[2][ARRSIZE] = { {1,2,3},{4,5,6} };
+		unsigned char arr2[][ARRSIZE] = {
+			{1,2,3},
+			{2,3,4},
+			{3,4,5} };
+		cout << "arr1[2][3] sizeof(arr1) = " << sizeof(arr1) << endl;
+		cout << "arr2[][3] sizeof(arr2) = " << sizeof(arr2) << endl;
 
+		int arr3[2][3][4] =
+		{
+			{{1,2,3,4},{2,3,4,5},{1,2,3,4}},
+			{{1,2,3,4},{2,3,4,5},{1,2,3,4}},
+		};
+		int arr4[][3][4] =
+		{
+			{{1,2,3,4},{2,3,4,5},{1,2,3,4}},
+			{{1,2,3,4},{2,3,4,5},{1,2,3,4}},
+			{{1,2,3,4},{2,3,4,5},{1,2,3,4}},
+		};
+		for (auto arr : arr2)
+		{
+			for (int i = 0; i < ARRSIZE; i++)
+			{
+				cout << static_cast<int>(arr[i]) << " " << flush;
+			}
+			cout << endl;
+		}
+		int width = ARRSIZE;
+		int height = sizeof(arr2) / (ARRSIZE * sizeof(unsigned char));
+
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				arr2[i][j]++;
+				cout << (int)arr2[i][j] << "-" << flush;
+			}
+			cout << endl;
+		}
+	}
+
+	//堆中二维数组的两种方式
+	{
+		//连续空间
+		int size = 2;
+		int(*arr5)[3] = new int[size][3]{ {1,1,2},{3,2,3} };//new 元素类型[数量], new[] 返回的是 指向第一个元素的指针。 第一个元素的类型是:int[3]  所以返回类型是： int (*)[3]
+		for (int i = 0; i < size; i++)
+		{
+			//sizeof(arr5[i]) 12 ;
+			for (auto a : arr5[i])
+			{
+				cout << a << "=";
+			}
+			cout << endl;
+		}
+		delete[]arr5;
+		arr5 = nullptr;
+
+		int width = 4;
+		int height = 3;
+		//指针数组
+		/*
+		1 2 3 1
+		4 5 6 3
+		1 1 1 1
+		*/
+		int** arr6 = new int* [height] {0};
+		for (int i = 0; i < height; i++)
+		{
+			arr6[i] = new int[width] {0};
+		}
+		arr6[1][1] = 99;
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				cout << arr6[i][j] << " ";
+			}
+			cout << endl;
+		}
+
+		for (int i = 0; i < height; i++) {
+			delete[] arr6[i];
+			arr6[i] = nullptr;
+		}
+
+		delete[] arr6;
+		arr6 = nullptr;
+
+	}
+	getchar();
+
+	// 栈空间 未初始化数组 空间内部不定
+	int arr1[10]; //
+	cout << "sizeof(arr1) = " << sizeof(arr1) << endl;
+	memset(arr1, 0, sizeof(arr1)); //数组可以通过sizeof获取内存大小
+	int arr2[5] = { 1,2,3,4,5 };
+	int arr3[32] = { 1,2,3 };
+	int arr4[1024] = { 0 }; //全部设置为0
+	int arr5[] = { 1,2,3,4 };
+	char str1[] = "test001";
+	cout << "sizeof(arr5) = " << sizeof(arr5) << endl;
+	cout << "sizeof(str1) = " << sizeof(str1) << endl;
+	for (auto s : str1) //只能访问数组
+	{
+		cout << s << "-" << flush;
+	}
+	cout << endl;
+
+	cout << "&arr2[0] = " << &arr2[0] << endl;
+	cout << "&arr2[1] = " << &arr2[1] << endl;
+	cout << "arr2+2 = " << arr2 + 2 << endl;
+	//std::begin(arr1);
+	//std::end(arr1);
+	std::find(std::begin(arr5), std::end(arr5), 3);
+
+	//堆空间
+	int* parr1 = new int[1024];
+	int psize = 2048;
+	auto parr2 = new unsigned char[psize];
+	//int tmp[psize];//????
+	memset(parr2, 0, psize);
+	auto parr3 = new int[psize];
+	memset(parr3, 0, psize * sizeof(int));  //sizeof(parr3)??? 32=>4 64=>8
+	//for(auto s:parr2)
+	int* parr4 = new int[3] { 1, 2, 3 };
+	int* parr5 = new int[] { 1, 2, 3, 6 };
+	int* parr6 = new int[] { 0 };
+
+	cout << "parr5[2] = " << parr5[2] << endl;
+	cout << "*(parr5+3) = " << *(parr5 + 3) << endl;
+	cout << "&parr5[0] = " << &parr5[0] << endl;
+	cout << "&parr5[1] = " << &parr5[1] << endl;
+	cout << "parr5+2 = " << parr5 + 2 << endl;
+
+	delete[] parr1;
+	parr1 = nullptr; //NULL 0
+	delete[] parr2;
+	parr2 = nullptr;
+	delete[] parr3;
+	parr3 = nullptr;
+	delete[] parr4;
+	parr4 = nullptr;
+	delete[] parr5;
+	parr5 = nullptr;
+	delete[] parr6;
+	parr6 = nullptr;
+	XData* datas = new XData[1024];
+	delete[] datas;
+	datas = nullptr;
+
+	return 0;
+}
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单
 
