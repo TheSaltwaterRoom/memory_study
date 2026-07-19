@@ -18,7 +18,9 @@ x64/
 x86/
 ARM/
 ARM64/
-[Bb]in/
+# Keep generated runtime files ignored, but version required runtime DLLs.
+[Bb]in/*
+![Bb]in/*.dll
 [Oo]bj/
 obj/
 [Oo]ut/
@@ -42,8 +44,6 @@ obj/
 
 # Binary outputs
 *.exe
-*.dll
-*.lib
 *.exp
 
 # Per-user project settings
